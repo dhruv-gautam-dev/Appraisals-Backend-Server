@@ -1,6 +1,7 @@
 import  express from 'express';
 import apiRouter from './router/apiRouter.js';
 import mongoose  from 'mongoose';
+import connectDB from './config/dbConfig.js';
 
 
 const app = express();
@@ -17,4 +18,9 @@ app.get('/test', (req, res) => {
 
 
 const PORT = 5000;
-app.listen(PORT, ()=>{console.log(`SERVER IS RUNNING ON PORT ${PORT}`)});
+app.listen(PORT, ()=>{
+  console.log(`SERVER IS RUNNING ON PORT ${PORT}`);
+  connectDB();
+  console.log('MongoDB connected');
+
+});
