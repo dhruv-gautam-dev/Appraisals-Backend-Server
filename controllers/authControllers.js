@@ -17,6 +17,7 @@ const generateToken = (user) => {
 
 
 //register new user
+// url "api/auth/register" comming to registerUser function
 export const registerUser = async (req, res )=>{
   const { name, email, password, role, department } = req.body;
   try {
@@ -41,4 +42,25 @@ export const registerUser = async (req, res )=>{
   }
 }
 
-//login user
+// login user
+export const loginUser = async (req,res)=>{
+  const {email, password} = req.body;
+  try {
+
+    const user = await User.findOne({email});
+
+    if(!user || ! (await user.comparePassword(password))){
+      res.status(400).json({message: "Invalid credentials"});
+    }
+    res.status(200).json({
+      _id:user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      department: user.department,
+      token: generateToken(user._id),
+    })
+  } catch (error) {
+    res.status(500).json({message: "Error in logging in user", error});
+  }
+}
