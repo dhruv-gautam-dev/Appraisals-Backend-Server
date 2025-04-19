@@ -1,16 +1,17 @@
 import express from 'express';
-import createAppraisal from '../controllers/appraisalControllers.js';
+import {createAppraisal,managerReview} from '../controllers/appraisalControllers.js';
 import auth from '../middlewares/authMiddleware.js'
 import role from '../middlewares/roleMiddleware.js';
 
 const router = express.Router();
 
 // // after /api/appraisals all urls are going here
-router.post('/',auth, role(['Employee']),createAppraisal);
+router.post('/',auth, role(['Employee']),createAppraisal); // /api/appraisals
+router.put('/:id/manager',managerReview); // /api/appraisals/:id/manager
+
 // router.get('/',getAllAppraisals);
 // router.get('/:id',getAppraisalById);
 
-// router.put('/:id/manager',managerReview);
 // router.put('/:id/supervisor',supervisorReview);
 // router.post('/:id/feedback',submitFeedback);
 // router.put('/:id/approve',finalApproval);
