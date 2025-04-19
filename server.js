@@ -1,11 +1,11 @@
 import  express from 'express';
-
+import apiRouter from './router/apiRouter.js';
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
-
+app.use('/api',apiRouter);
 
 app.get('/test', (req, res) => {
   console.log('GET request received (test successful)'  );
