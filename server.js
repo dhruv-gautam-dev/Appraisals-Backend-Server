@@ -2,13 +2,16 @@ import  express from 'express';
 import apiRouter from './router/apiRouter.js';
 import mongoose  from 'mongoose';
 import connectDB from './config/dbConfig.js';
-
+import cors from 'cors';
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 app.use('/api',apiRouter);
+
+
 
 // test the server
 app.get('/test', (req, res) => {

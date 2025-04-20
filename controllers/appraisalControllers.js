@@ -9,6 +9,8 @@ export const createAppraisal = async (req, res) => {
   try {
     const newAppraisal = new AppraisalForm({
       employee: req.user._id,
+      employeeName: req.user.name,
+      comments: req.user.comments,
       communication,
       teamwork,
       problemSolving,
@@ -24,17 +26,39 @@ export const createAppraisal = async (req, res) => {
 };
 
 
-// Get all appraisals by employee ID
-// @route GET /api/appraisals/employee/:id
+// // Get all appraisals by employee ID
+// // GET /api/appraisals/:id
+// export const getAppraisalById = async (req, res) => {
+//   try {
+//     console.log(req.params.id);
+//     const id = req.params.id;
+
+//     if (!mongoose.Types.ObjectId.isValid(id)) {
+//       return res.status(400).json({ message: 'Invalid appraisal ID' });
+//     }
+
+//     const appraisal = await AppraisalForm.findById(id);
+//     console.log(appraisal);
+//     if (!appraisal) {
+//       return res.status(404).json({ message: 'Appraisal not found' });
+//     }
+
+//     res.json([appraisal]);
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error fetching appraisal', error: error.message });
+//   }
+// };
+
+// GET /api/appraisals/employee/:employeeId
+
 export const getAppraisalsByEmployeeId = async (req, res) => {
   try {
-    const employeeId = req.params.id;
+    const { employeeId } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(employeeId)) {
-      return res.status(400).json({ message: 'Invalid employee ID' });
-    }
 
-    const appraisals = await AppraisalForm.find({ employee: employeeId });
+
+
+    const appraisals = await AppraisalForm.find({ employeeId });
 
     if (!appraisals || appraisals.length === 0) {
       return res.status(404).json({ message: 'No appraisals found for this employee' });
@@ -42,7 +66,8 @@ export const getAppraisalsByEmployeeId = async (req, res) => {
 
     res.json(appraisals);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching appraisals', error: error.message });
+    console.error('Error fetching appraisals:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
 
@@ -56,15 +81,14 @@ export const managerReview = async (req, res) => {
     if (!appraisal) {
       return res.status(404).json({ message: 'Appraisal not found' });
     }
-    appraisal.status = 'pending Supervisor review';
-    appraisal.managerReview= true;
-    res.json({ message: 'Appraisal reviewed by manager and forwarded to supervisor',  });
+    appraisal.status = 'PendingSupervisor';
+    appraisal.managerApproval = true;
+    await appraisal.save(); // Save the updated appraisal
+    res.json({ message: 'Appraisal reviewed by manager and forwarded to supervisor' });
   } catch (error) {
     res.status(500).json({ message: 'Error reviewing appraisal', error: error.message });
-    
   }
-}
-
+};
 
 // Supervisor requests feedback from peers and juniors
 // @route PUT /api/appraisals/:id/supervisor

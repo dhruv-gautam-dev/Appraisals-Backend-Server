@@ -58,7 +58,7 @@ export const loginUser = async (req,res)=>{
       email: user.email,
       role: user.role,
       department: user.department,
-      token: generateToken(user._id),
+      token: generateToken(user),
     })
   } catch (error) {
     res.status(500).json({message: "Error in logging in user", error});

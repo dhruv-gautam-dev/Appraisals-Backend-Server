@@ -1,3 +1,4 @@
+
 import mongoose from "mongoose";
 
 const feedbackSchema = new mongoose.Schema({
@@ -10,11 +11,13 @@ const feedbackSchema = new mongoose.Schema({
 
 const appraisalFormSchema = new mongoose.Schema({
   employeeId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  employeeName: String,
   status: {
     type: String,
     enum: ['Draft', 'PendingManager', 'PendingSupervisor', 'PendingFeedback', 'Approved'],
     default: 'Draft'
   },
+  comments: String,
   selfReview: String,
   peerFeedbacks: [feedbackSchema],
   juniorFeedbacks: [feedbackSchema],
