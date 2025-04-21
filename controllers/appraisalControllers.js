@@ -109,14 +109,15 @@ export const supervisorRequestFeedback = async (req, res) => {
 };
 
 // feedback submission by peers and juniors
-//
 export const submitFeedback = async (req, res) => {
   const { comment, rating } = req.body;
   const userRole = req.user.role;
 
   try {
     const appraisal = await AppraisalForm.findById(req.params.id);
-    if (!appraisal) return res.status(404).json({ message: 'Appraisal not found' });
+    if (!appraisal) {
+      return res.status(404).json({ message: 'Appraisal not found' });
+    }
 
     const feedback = {
       reviewerId: req.user._id,
@@ -132,13 +133,15 @@ export const submitFeedback = async (req, res) => {
     } else {
       return res.status(403).json({ message: 'Only peers or juniors can submit feedback' });
     }
+    appraisal.status = 'Approved';
 
     await appraisal.save();
-    res.json({ message: 'Feedback submitted' });
+    res.json({ message: 'Feedback submitted successfully' });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Error submitting feedback:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
-};
+};;
 
 
 
