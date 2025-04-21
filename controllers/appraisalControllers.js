@@ -98,6 +98,7 @@ export const supervisorRequestFeedback = async (req, res) => {
     if (!appraisal) return res.status(404).json({ message: 'Appraisal not found' });
 
     appraisal.status = 'PendingFeedback';
+    console.log(appraisal);
     appraisal.supervisorApproval = true;
     await appraisal.save();
 
