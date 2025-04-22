@@ -26,28 +26,6 @@ export const createAppraisal = async (req, res) => {
 };
 
 
-// // Get all appraisals by employee ID
-// // GET /api/appraisals/:id
-// export const getAppraisalById = async (req, res) => {
-//   try {
-//     console.log(req.params.id);
-//     const id = req.params.id;
-
-//     if (!mongoose.Types.ObjectId.isValid(id)) {
-//       return res.status(400).json({ message: 'Invalid appraisal ID' });
-//     }
-
-//     const appraisal = await AppraisalForm.findById(id);
-//     console.log(appraisal);
-//     if (!appraisal) {
-//       return res.status(404).json({ message: 'Appraisal not found' });
-//     }
-
-//     res.json([appraisal]);
-//   } catch (error) {
-//     res.status(500).json({ message: 'Error fetching appraisal', error: error.message });
-//   }
-// };
 
 // GET /api/appraisals/employee/:employeeId
 
